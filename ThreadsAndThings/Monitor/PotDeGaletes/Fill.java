@@ -15,7 +15,7 @@ public class Fill extends Thread {
         System.out.println("Ñam Ñam");
         if (num > potGaletes.getNumGaletes()) {
             try {
-                Thread.sleep(potGaletes.getNumGaletes()*100);
+                Thread.sleep(potGaletes.getNumGaletes() * 100);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -32,29 +32,28 @@ public class Fill extends Thread {
 
     @Override
     public void run() {
-        while (true) {
-            potGaletes.agafat();
-            System.out.println(nom + " ha agafat el pot!");
-            numGaleta = (int) ((Math.random() * 2) + 2);
-            if (potGaletes.getNumGaletes() == 0) {
-                System.out.println("No hi han galetes :(");
-                potGaletes.deixar();
-                try {
-                    Thread.sleep((long) Math.random() * 100);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            } else {
+        try {
+            while (true) {
+                potGaletes.agafat();
+                System.out.println(nom + " ha agafat el pot!");
+                numGaleta = (int) ((Math.random() * 2) + 2);
+                if (potGaletes.getNumGaletes() == 0) {
+                    System.out.println("No hi han galetes :(");
+                    potGaletes.deixar();
 
-                System.out.println(numGaleta);
-                menjarGaleta(numGaleta);
-                potGaletes.deixar();
-                try {
                     Thread.sleep((long) Math.random() * 100);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+
+                } else {
+
+                    System.out.println(numGaleta);
+                    menjarGaleta(numGaleta);
+                    potGaletes.deixar();
+                    Thread.sleep((long) Math.random() * 100);
                 }
             }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
+
     }
 }
