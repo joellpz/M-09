@@ -12,7 +12,7 @@ public class Main {
         personas.add(new Persona("MA","mujer", banyMixt));
         personas.add(new Persona("MB","mujer", banyMixt));
         personas.add(new Persona("NIÑOA","niño", banyMixt));
-        personas.add(new Persona("NIÑOA","niño", banyMixt));
+        personas.add(new Persona("NIÑOB","niño", banyMixt));
         /*for (int i = 0; i < 15; i++) {
             int num= (int) ((Math.random() * 3) + 1);
             switch (num) {
