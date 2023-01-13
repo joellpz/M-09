@@ -4,25 +4,27 @@ public class BanyMixt {
     public String ocupat;
     private int cont;
     private final int max;
+    boolean espera;
 
     public BanyMixt(int max) {
         this.ocupat = "none";
         this.cont = 0;
         this.max = max;
+        espera = false;
     }
 
     public synchronized void entrarBany(String who) {
-        System.out.println("ENTRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR "+who);
         do {
+            espera = true;
             if (this.ocupat.equals(who) && cont < max) {
                 cont++;
-                break;
+                espera = false;
             } else if (this.ocupat.equals("none")) {
                 ocupat = who;
                 cont++;
                 System.out.println("CAMBIOOOOOOO a " + ocupat);
                 notifyAll();
-                break;
+                espera = false;
             } else {
                 try {
                     wait();
@@ -30,7 +32,7 @@ public class BanyMixt {
                     throw new RuntimeException(e);
                 }
             }
-        } while (true);
+        } while (espera);
     }
 
     public synchronized void sortirBany() {
