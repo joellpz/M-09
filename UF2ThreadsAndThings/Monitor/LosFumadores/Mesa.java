@@ -28,22 +28,15 @@ public class Mesa {
     }
 
     public synchronized void takeSources(SourceType source) {
-        do {
-            if (sourceList.size() != 0 && !sourceList.contains(source)) {
-                System.out.print("\n"+source + ": ");
-                sourceList.forEach(sourceType -> System.out.print(sourceType + ", "));
-                System.out.println();
-                sourceList.clear();
-                notifyAll();
-                break;
-            } else {
-                try {
-                    //System.out.println(source + ": ESPERANDO!");
-                    wait();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        } while (true);
+        try {
+            while (sourceList.size() == 0 || sourceList.contains(source)) wait();
+            System.out.print("\n" + source + ": ");
+            sourceList.forEach(sourceType -> System.out.print(sourceType + ", "));
+            System.out.println();
+            sourceList.clear();
+            notifyAll();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
