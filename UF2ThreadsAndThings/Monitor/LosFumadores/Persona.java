@@ -16,16 +16,17 @@ public class Persona extends Thread {
     @Override
     public void run() {
         do {
-            if (type.equals(PersonType.PROVEEDOR)) proveer();
+            if (type.equals(PersonType.PROVEEDOR))
+                proveer();
             else fumar();
         } while (true);
     }
 
     public void fumar() {
         mesa.takeSources(source);
-        System.out.println(source+" está FUMANDO");
+        System.out.println("El que tiene "+ source+" está FUMANDO");
         try {
-            Thread.sleep((long) ((Math.random() + 300) + 3000));
+            Thread.sleep((long) ((Math.random() + 300) + 5000));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -50,16 +51,15 @@ public class Persona extends Thread {
                 }
                 ;
             });
-            mesa.putSource(sourceTypes.get(0), sourceTypes.get(1));
             System.out.println("*** PROVEEDOR: PONE " + sourceTypes.get(0) + " y " + sourceTypes.get(1) + "***");
+            mesa.putSource(sourceTypes.get(0), sourceTypes.get(1));
             try {
-                Thread.sleep((long) ((Math.random() + 1000) + 100));
+                Thread.sleep((long) ((Math.random() + 500) + 250));
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
             sourceTypes.clear();
         }
     }
-
 }
 

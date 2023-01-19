@@ -30,9 +30,9 @@ public class Mesa {
     public synchronized void takeSources(SourceType source) {
         try {
             while (sourceList.size() == 0 || sourceList.contains(source)) wait();
-            System.out.print("\n" + source + ": ");
+            /*System.out.print("\n" + source + ": ");
             sourceList.forEach(sourceType -> System.out.print(sourceType + ", "));
-            System.out.println();
+            System.out.println();*/
             sourceList.clear();
             notifyAll();
         } catch (InterruptedException e) {
