@@ -37,6 +37,7 @@ public class Main {
             @Override
             public int compare(Equip o1, Equip o2) {
                 if (o1.getTemps_final() > o2.getTemps_final()) return 1;
+                else if (o1.getTemps_final() < o2.getTemps_final()) return -1;
                 else return 0;
             }
         });
