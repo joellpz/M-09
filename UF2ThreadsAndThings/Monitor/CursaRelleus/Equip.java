@@ -34,7 +34,7 @@ public class Equip extends Thread {
         }
 
         temps_final = (float) (System.currentTimeMillis() - temps_inicial) / 1000;
-        System.out.println(name + " ha trigat: " +temps_final);
+        //System.out.println(name + " ha trigat: " +temps_final);
     }
 
 
