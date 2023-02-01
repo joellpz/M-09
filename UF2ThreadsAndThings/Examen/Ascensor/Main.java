@@ -9,8 +9,8 @@ public class Main {
         Ascensor ascensor = new Ascensor(10, 10);
         Motor motor = new Motor(ascensor);
 
-        for (int i = 0; i < 20; i++) {
-            personaList.add(new Persona(i +"", ascensor));
+        for (int i = 0; i < 5; i++) {
+            personaList.add(new Persona(i +": ", ascensor));
         }
 
         personaList.forEach(Thread::start);
