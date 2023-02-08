@@ -19,9 +19,7 @@ public class TestApunts {
         char[] cbuf = new char[512];
         int caractersLlegits;
 
-
         try {
-
             in = url.openStream();
             InputStreamReader inr = new InputStreamReader(in);
             while((caractersLlegits=inr.read(cbuf))!=-1){
@@ -40,13 +38,13 @@ public class TestApunts {
         }
     }
 
-    private static void sendForm(){
+    private static void sendForm(String urlPage){
         try {
-            URL url = new URL("https://docs.google.com/forms/d/e/1FAIpQLSdV5QvhChK0fBpAMo5pN7sIvktqwHGu1vdoWJFvBguCeMvYUw/formResponse");
+            URL url = new URL(urlPage);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setDoOutput(true);
             OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
-            out.write("entry.835030737=Joel&entry.1616686619=No");
+            out.write("entry.835030737=JoelProva&entry.1616686619=No");
             out.close();
             InputStream in = con.getInputStream();
             System.out.println(con.getURL());
@@ -57,6 +55,6 @@ public class TestApunts {
     }
     public static void main(String[] args) {
             //TestApunts.printContentWithSpecificEtiqueta(new URL(args[0]),args[1]);
-            sendForm();
+            sendForm("https://docs.google.com/forms/d/e/1FAIpQLSdV5QvhChK0fBpAMo5pN7sIvktqwHGu1vdoWJFvBguCeMvYUw/formResponse");
     }
 }
