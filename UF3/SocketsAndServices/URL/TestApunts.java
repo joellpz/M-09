@@ -1,12 +1,11 @@
 package UF3.SocketsAndServices.URL;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,8 +27,6 @@ public class TestApunts {
                         String export = str.substring(str.indexOf("<"+etiqueta));
                         System.out.print(export+"\n");
                     }
-
-
                 //System.out.println(str);
             }
             System.out.println();
@@ -44,7 +41,7 @@ public class TestApunts {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setDoOutput(true);
             OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
-            out.write(prop1+"="+val1"&"+prop2+"="+val2);
+            out.write(prop1+"="+val1+"&"+prop2+"="+val2);
             out.close();
             InputStream in = con.getInputStream();
             System.out.println(con.getURL());
@@ -55,6 +52,6 @@ public class TestApunts {
     }
     public static void main(String[] args) {
             //TestApunts.printContentWithSpecificEtiqueta(new URL(args[0]),args[1]);
-            sendForm("https://docs.google.com/forms/d/e/1FAIpQLSdV5QvhChK0fBpAMo5pN7sIvktqwHGu1vdoWJFvBguCeMvYUw/formResponse","entry.835030737","entry.1616686619","JoelProva","No");
+            sendForm("https://docs.google.com/forms/d/e/1FAIpQLSdV5QvhChK0fBpAMo5pN7sIvktqwHGu1vdoWJFvBguCeMvYUw/formResponse","entry.835030737","entry.1616686619","JoelLopez","No");
     }
 }
