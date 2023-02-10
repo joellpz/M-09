@@ -38,13 +38,13 @@ public class TestApunts {
         }
     }
 
-    private static void sendForm(String urlPage){
+    private static void sendForm(String urlPage, String prop1, String prop2, String val1, String val2){
         try {
             URL url = new URL(urlPage);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setDoOutput(true);
             OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
-            out.write("entry.835030737=JoelProva&entry.1616686619=No");
+            out.write(prop1+"="+val1"&"+prop2+"="+val2);
             out.close();
             InputStream in = con.getInputStream();
             System.out.println(con.getURL());
@@ -55,6 +55,6 @@ public class TestApunts {
     }
     public static void main(String[] args) {
             //TestApunts.printContentWithSpecificEtiqueta(new URL(args[0]),args[1]);
-            sendForm("https://docs.google.com/forms/d/e/1FAIpQLSdV5QvhChK0fBpAMo5pN7sIvktqwHGu1vdoWJFvBguCeMvYUw/formResponse");
+            sendForm("https://docs.google.com/forms/d/e/1FAIpQLSdV5QvhChK0fBpAMo5pN7sIvktqwHGu1vdoWJFvBguCeMvYUw/formResponse","entry.835030737","entry.1616686619","JoelProva","No");
     }
 }
