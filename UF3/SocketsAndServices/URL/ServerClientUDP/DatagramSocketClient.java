@@ -13,7 +13,7 @@ public class DatagramSocketClient {
     public static void main(String[] args) {
         DatagramSocketClient datagramSocketClient = new DatagramSocketClient();
         try {
-            datagramSocketClient.init("192.168.22.112",5555);
+            datagramSocketClient.init("localhost",2375);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -23,6 +23,7 @@ public class DatagramSocketClient {
         serverIP = InetAddress.getByName(host);
         serverPort = port;
         socket = new DatagramSocket();
+
         runClient();
     }
 

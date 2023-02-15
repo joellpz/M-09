@@ -9,6 +9,9 @@ import java.net.InetAddress;
 public class DatagramSocketServer {
 
     DatagramSocket socket;
+    SecretNum secret;
+    int secretNumMax;
+
     public static void main(String[] args) {
         DatagramSocketServer datagramSocketServer = new DatagramSocketServer();
         try {
@@ -21,6 +24,8 @@ public class DatagramSocketServer {
 
     public void init(int port) throws IOException {
         socket = new DatagramSocket(port);
+        secretNumMax = 50;
+        secret = new SecretNum(secretNumMax);
         runServer();
     }
 
@@ -52,7 +57,7 @@ public class DatagramSocketServer {
 
     private byte[] processData(byte[] data, int length) {
         //procés diferent per cada aplicació
-        String msg =new String(data,0,length);
+        String msg = new String(data, 0, length);
         System.out.println(msg);
         return msg.toUpperCase().getBytes();
     }
