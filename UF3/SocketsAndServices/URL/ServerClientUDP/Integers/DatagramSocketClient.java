@@ -72,7 +72,7 @@ public class DatagramSocketClient {
 
     private byte[] getFirstRequest() {
         //procés diferent per cada aplicació
-        System.out.println("Asigname Tu NOMBRE parguela!");
+        System.out.println("El Juego del Numero Random, introduce tu numero:");
         return ByteBuffer.allocate(4).putInt(sc.nextInt()).array();
 
     }
