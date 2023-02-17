@@ -1,7 +1,9 @@
-package UF3.SocketsAndServices.URL.ServerClientUDP;
+package UF3.SocketsAndServices.URL.ServerClientUDP.Strings;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.Scanner;
 
 public class DatagramSocketClient {

@@ -1,4 +1,6 @@
-package UF3.SocketsAndServices.URL.ServerClientUDP;
+package UF3.SocketsAndServices.URL.ServerClientUDP.Strings;
+
+import UF3.SocketsAndServices.URL.ServerClientUDP.Integers.SecretNum;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
