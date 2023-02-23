@@ -59,8 +59,7 @@ public class ClientFrasesAleatorias {
 
         //pintem velocimetre
         if (s.split(" ").length>7) {
-            System.out.println(s.split(" ").length);
-            System.out.println(s);
+            System.out.println(s.split(" ").length + " - " + s);
         }
 
         //if (v==1) ret=false;
