@@ -1,4 +1,4 @@
-package UF3.SocketsAndServices.URL.ServerClientUDP.Integers;
+package UF3.SocketsAndServices.UnicsatUDP.Integers;
 
 public class SecretNum {
     /* Classe que genera numeros aleatoris per jugar a adivinar-los i els comprova

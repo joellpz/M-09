@@ -1,9 +1,10 @@
-package UF3.SocketsAndServices.URL.ServerClientUDP.Strings;
+package UF3.SocketsAndServices.UnicsatUDP.Integers;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.nio.ByteBuffer;
 import java.util.Scanner;
 
 public class DatagramSocketClient {
@@ -58,15 +59,21 @@ public class DatagramSocketClient {
     private byte[] getDataToRequest(byte[] data, int length) {
         //procés diferent per cada aplicació
         String msg = new String(data,0,length);
-        System.out.println("Respuesta:" + msg);
-        System.out.println("Mensaje a enviar:");
-        return sc.nextLine().getBytes();
+        int n = ByteBuffer.wrap(data).getInt();
+        if (n == 0) System.out.println("** Has acertat el Numero!! **");
+        else if (n == 1) System.out.println("Més petit.");
+        else System.out.println("Més GRAN.");
+
+        System.out.println("Valor a enviar:");
+        return ByteBuffer.allocate(4).putInt(sc.nextInt()).array();
     }
+
+
 
     private byte[] getFirstRequest() {
         //procés diferent per cada aplicació
-        System.out.println("Asigname Tu NOMBRE parguela!");
-        return sc.nextLine().getBytes();
+        System.out.println("El Juego del Numero Random, introduce tu numero:");
+        return ByteBuffer.allocate(4).putInt(sc.nextInt()).array();
 
     }
 

@@ -1,4 +1,4 @@
-package UF3.SocketsAndServices.URL.ServerClientUDP.Integers;
+package UF3.SocketsAndServices.UnicsatUDP.Integers;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
