@@ -1,4 +1,6 @@
-package UF3.SocketsAndServices.TCP;
+package UF3.SocketsAndServices.TCP.Integers;
+
+import UF3.SocketsAndServices.UnicsatUDP.Integers.SecretNum;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,9 +14,16 @@ import java.util.logging.Logger;
 
 public class TCPSocketServer {
 
+    SecretNum secret;
+    int secretNumMax;
     public static void main(String[] args) {
-        TCPSocketServer server = new TCPSocketServer();
+        TCPSocketServer server = new TCPSocketServer(50);
         server.listen();
+    }
+
+    public TCPSocketServer(int numMax) {
+        this.secretNumMax = numMax;
+        secret = new SecretNum(numMax);
     }
 
     private final Scanner sc = new Scanner(System.in);
@@ -74,8 +83,14 @@ public class TCPSocketServer {
     }
 
     private String processData(String clientMessage) {
-        System.out.println(clientMessage);
-        return sc.nextLine();
+        try{
+            System.out.println(clientMessage);
+            return secret.comprova(clientMessage);
+        }catch (NumberFormatException e){
+            return null;
+        }
+
+
     }
 
     private void closeClient(Socket clientSocket) {
