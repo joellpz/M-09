@@ -4,7 +4,9 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +20,7 @@ public class ClientTCP extends Thread {
     private OutputStream out;
     private Scanner scin;
     private boolean continueConnected;
-    private Llista t;
+    private Llista j;
 
     private ClientTCP(String hostname, int port) {
         try {
@@ -36,30 +38,48 @@ public class ClientTCP extends Thread {
     }
 
     public void run() {
-        String msg = null;
+        String valor = "Y";
         while (continueConnected) {
             //Llegir info del servidor (estat del tauler)
-            t = getRequest();
 
-            //Crear codi de resposta a missatge
-            System.out.println("Llista Ordenada Rebuda ....");
-            System.out.println(t.getNumberList());
-
-
-            System.out.println("Entra un número: ");
-            //j.num = scin.nextInt();
-            //j.Nom = Nom;
-
-            try {
-                ObjectOutputStream oos = null;
-                oos = new ObjectOutputStream(out);
-                //oos.writeObject(j);
-                out.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            j = getRequest();
+            System.out.println("a");
+            if (j != null) {
+                System.out.println(j.getNumberList());
+                do {
+                    System.out.println("Vols enviar una altre llista (Y/N)?");
+                    valor = scin.nextLine();
+                    if (valor.equalsIgnoreCase("N")) {
+                        continueConnected = false;
+                    } else if (!valor.equalsIgnoreCase("Y")) {
+                        System.out.println("Error, valor incorrecte!");
+                    }
+                } while (!valor.equalsIgnoreCase("N") && !valor.equalsIgnoreCase("Y"));
             }
 
+            if (continueConnected) {
+                System.out.println("Introdueix els valor de la Llista de Integers, introdueix N quan hagis acabat:");
 
+                List<Integer> llistaIntegers = new ArrayList<>();
+                do {
+                    try {
+                        valor = scin.nextLine();
+                        if (!Objects.requireNonNull(valor).equalsIgnoreCase("N"))
+                            llistaIntegers.add(Integer.parseInt(valor));
+                    } catch (NumberFormatException e) {
+                        System.out.println("Error, mal format del valor!");
+                    }
+                } while (!Objects.requireNonNull(valor).equalsIgnoreCase("N"));
+                try {
+                    ObjectOutputStream oos = new ObjectOutputStream(out);
+                    oos.writeObject(new Llista(Nom, llistaIntegers));
+                    out.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            //Crear codi de resposta a missatge
         }
 
         close(socket);
@@ -69,13 +89,11 @@ public class ClientTCP extends Thread {
     private Llista getRequest() {
         try {
             ObjectInputStream ois = new ObjectInputStream(in);
-            t = (Llista) ois.readObject();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            j = (Llista) ois.readObject();
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
-        return t;
+        return j;
     }
 
 
@@ -106,7 +124,7 @@ public class ClientTCP extends Thread {
         System.out.println("Ip del servidor?");
         Scanner sip = new Scanner(System.in);
         ipSrv = sip.next();
-        System.out.println("Nom jugador:");
+        System.out.println("Nom Client:");
         jugador = sip.next();
 
         ClientTCP clientTcp = new ClientTCP(ipSrv, 5558);

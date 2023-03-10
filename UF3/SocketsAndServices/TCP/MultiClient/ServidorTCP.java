@@ -1,11 +1,13 @@
 package UF3.SocketsAndServices.TCP.MultiClient;
 
+import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ServidorTCP {
     private int port;
-    private Llista t;
-
     private ServidorTCP(int port ) {
         this.port = port;
 
@@ -20,7 +22,7 @@ public class ServidorTCP {
                 clientSocket = serverSocket.accept();
                 //Llançar Thread per establir la comunicació
                 //sumem 1 al numero de jugadors
-                ThreadSevidorAdivina_Obj FilServidor = new ThreadSevidorAdivina_Obj(clientSocket, ns, t);
+                ThreadServidorTCP FilServidor = new ThreadServidorTCP(clientSocket);
                 Thread client = new Thread(FilServidor);
                 client.start();
             }
