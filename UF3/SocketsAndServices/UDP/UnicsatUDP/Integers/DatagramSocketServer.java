@@ -1,11 +1,10 @@
-package UF3.SocketsAndServices.UnicsatUDP.Strings;
-
-import UF3.SocketsAndServices.UnicsatUDP.Integers.SecretNum;
+package UF3.SocketsAndServices.UDP.UnicsatUDP.Integers;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.nio.ByteBuffer;
 
 
 public class DatagramSocketServer {
@@ -17,7 +16,7 @@ public class DatagramSocketServer {
     public static void main(String[] args) {
         DatagramSocketServer datagramSocketServer = new DatagramSocketServer();
         try {
-            datagramSocketServer.init(2735);
+            datagramSocketServer.init(2375);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -57,10 +56,15 @@ public class DatagramSocketServer {
         }
     }
 
+    //     int -> byte[]    n -> missatge
+//    byte[] missatge = ByteBuffer.allocate(4).putInt(n).array();
+//    // byte[] -> int     data -> n
+//    int n = ByteBuffer.wrap(data).getInt();
+
     private byte[] processData(byte[] data, int length) {
         //procés diferent per cada aplicació
-        String msg = new String(data, 0, length);
-        System.out.println(msg);
-        return msg.toUpperCase().getBytes();
+        int n = ByteBuffer.wrap(data).getInt();
+        System.out.println(n);
+        return ByteBuffer.allocate(4).putInt(secret.comprova(n)).array();
     }
 }

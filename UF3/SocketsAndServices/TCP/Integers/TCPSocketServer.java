@@ -1,6 +1,6 @@
 package UF3.SocketsAndServices.TCP.Integers;
 
-import UF3.SocketsAndServices.UnicsatUDP.Integers.SecretNum;
+import UF3.SocketsAndServices.UDP.UnicsatUDP.Integers.SecretNum;
 
 import java.io.BufferedReader;
 import java.io.IOException;

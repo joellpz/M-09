@@ -1,4 +1,4 @@
-package UF3.SocketsAndServices.MulticastUDP;
+package UF3.SocketsAndServices.UDP.MulticastUDP;
 
 import java.io.IOException;
 import java.net.*;

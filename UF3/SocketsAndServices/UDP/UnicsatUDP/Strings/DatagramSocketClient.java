@@ -1,4 +1,4 @@
-package UF3.SocketsAndServices.UnicsatUDP.Strings;
+package UF3.SocketsAndServices.UDP.UnicsatUDP.Strings;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
