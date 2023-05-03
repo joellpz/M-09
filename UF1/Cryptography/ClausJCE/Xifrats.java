@@ -1,5 +1,6 @@
 package UF1.Cryptography.ClausJCE;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -11,7 +12,7 @@ import java.util.Arrays;
 public class Xifrats {
     public static SecretKey keygenKeyGeneration(int keySize) {
         SecretKey sKey = null;
-        if ((keySize == 128)||(keySize == 192)||(keySize == 256)) {
+        if ((keySize == 128) || (keySize == 192) || (keySize == 256)) {
             try {
                 KeyGenerator kgen = KeyGenerator.getInstance("AES");
                 kgen.init(keySize);
@@ -27,12 +28,12 @@ public class Xifrats {
 
     public static SecretKey passwordKeyGeneration(String text, int keySize) {
         SecretKey sKey = null;
-        if ((keySize == 128)||(keySize == 192)||(keySize == 256)) {
+        if ((keySize == 128) || (keySize == 192) || (keySize == 256)) {
             try {
                 byte[] data = text.getBytes("UTF-8");
                 MessageDigest md = MessageDigest.getInstance("SHA-256");
                 byte[] hash = md.digest(data);
-                byte[] key = Arrays.copyOf(hash, keySize/8);
+                byte[] key = Arrays.copyOf(hash, keySize / 8);
                 sKey = new SecretKeySpec(key, "AES");
                 System.out.println("** Key Generated **");
             } catch (Exception ex) {
@@ -47,9 +48,9 @@ public class Xifrats {
         try {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, sKey);
-            encryptedData =  cipher.doFinal(data);
+            encryptedData = cipher.doFinal(data);
             System.out.println(" ** Text Encrypted **");
-        } catch (Exception  ex) {
+        } catch (Exception ex) {
             System.err.println("Error xifrant les dades: " + ex);
         }
         return encryptedData;
@@ -60,11 +61,13 @@ public class Xifrats {
         try {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, sKey);
-            decryptedData =  cipher.doFinal(data);
+            decryptedData = cipher.doFinal(data);
             System.out.println(" ** Text Decrypted **");
-        } catch (Exception  ex) {
-            System.err.println("Error xifrant les dades: " + ex);
+        } catch (Exception ex) {
+            System.err.println("Error desxifrant les dades: " + ex);
         }
         return decryptedData;
     }
+
+
 }
