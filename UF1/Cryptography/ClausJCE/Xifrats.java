@@ -5,8 +5,7 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
 import java.util.Arrays;
 
 public class Xifrats {
@@ -43,10 +42,12 @@ public class Xifrats {
         return sKey;
     }
 
-    public static byte[] encryptData(SecretKey sKey, byte[] data) {
+    public static byte[] encryptData(Key sKey, byte[] data, String chiperType) {
         byte[] encryptedData = null;
         try {
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            Cipher cipher;
+            if (chiperType.equalsIgnoreCase("RSA")) cipher = Cipher.getInstance("RSA");
+            else cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, sKey);
             encryptedData = cipher.doFinal(data);
             System.out.println(" ** Text Encrypted **");
@@ -56,10 +57,11 @@ public class Xifrats {
         return encryptedData;
     }
 
-    public static byte[] decryptData(SecretKey sKey, byte[] data) {
+    public static byte[] decryptData(Key sKey, byte[] data,String chiperType) {
         byte[] decryptedData = null;
-        try {
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        try {Cipher cipher;
+            if (chiperType.equalsIgnoreCase("RSA")) cipher = Cipher.getInstance("RSA");
+            else cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, sKey);
             decryptedData = cipher.doFinal(data);
             System.out.println(" ** Text Decrypted **");
@@ -69,5 +71,16 @@ public class Xifrats {
         return decryptedData;
     }
 
+    public static KeyPair randomGenerate(int len) {
+        KeyPair keys = null;
+        try {
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+            keyGen.initialize(len);
+            keys = keyGen.genKeyPair();
+        } catch (Exception ex) {
+            System.err.println("Generador no disponible.");
+        }
+        return keys;
+    }
 
 }
