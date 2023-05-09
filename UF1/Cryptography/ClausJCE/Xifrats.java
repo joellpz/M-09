@@ -5,6 +5,8 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.File;
+import java.io.FileInputStream;
 import java.security.*;
 import java.util.Arrays;
 
@@ -57,9 +59,10 @@ public class Xifrats {
         return encryptedData;
     }
 
-    public static byte[] decryptData(Key sKey, byte[] data,String chiperType) {
+    public static byte[] decryptData(Key sKey, byte[] data, String chiperType) {
         byte[] decryptedData = null;
-        try {Cipher cipher;
+        try {
+            Cipher cipher;
             if (chiperType.equalsIgnoreCase("RSA")) cipher = Cipher.getInstance("RSA");
             else cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, sKey);
@@ -69,6 +72,15 @@ public class Xifrats {
             System.err.println("Error desxifrant les dades: " + ex);
         }
         return decryptedData;
+    }
+    public static KeyStore loadKeyStore(String ksFile, String ksPwd) throws Exception {
+        KeyStore ks = KeyStore.getInstance("PKCS12");
+        File f = new File (ksFile);
+        if (f.isFile()) {
+            FileInputStream in = new FileInputStream (f);
+            ks.load(in, ksPwd.toCharArray());
+        }
+        return ks;
     }
 
     public static KeyPair randomGenerate(int len) {
@@ -81,6 +93,33 @@ public class Xifrats {
             System.err.println("Generador no disponible.");
         }
         return keys;
+    }
+
+    public static byte[] signData(byte[] data, PrivateKey priv) {
+        byte[] signature = null;
+
+        try {
+            Signature signer = Signature.getInstance("SHA1withRSA");
+            signer.initSign(priv);
+            signer.update(data);
+            signature = signer.sign();
+        } catch (Exception ex) {
+            System.err.println("Error signant les dades: " + ex);
+        }
+        return signature;
+    }
+
+    public static boolean validateSignature(byte[] data, byte[] signature, PublicKey pub) {
+        boolean isValid = false;
+        try {
+            Signature signer = Signature.getInstance("SHA1withRSA");
+            signer.initVerify(pub);
+            signer.update(data);
+            isValid = signer.verify(signature);
+        } catch (Exception ex) {
+            System.err.println("Error validant les dades: " + ex);
+        }
+        return isValid;
     }
 
 }

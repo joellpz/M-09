@@ -129,10 +129,7 @@ public class Main {
     public static void saveRamdomKeyIntoKeystore(String keystorePath, String keystorePassword) {
         KeyStore keyStore = null;
         try {
-            keyStore = KeyStore.getInstance("PKCS12");
-            FileInputStream fis = new FileInputStream(keystorePath);
-            keyStore.load(fis, keystorePassword.toCharArray());
-            fis.close();
+            keyStore = Xifrats.loadKeyStore(keystorePath,keystorePassword);
             SecretKey secretKey = Xifrats.keygenKeyGeneration(128);
             KeyStore.SecretKeyEntry secretKeyEntry = new KeyStore.SecretKeyEntry(secretKey);
             KeyStore.ProtectionParameter entryPassword = new KeyStore.PasswordProtection(keystorePassword.toCharArray());
@@ -143,7 +140,7 @@ public class Main {
             keyStore.store(fos, keystorePassword.toCharArray());
             fos.close();
 
-        } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -171,6 +168,7 @@ public class Main {
         throw new Exception("No s'ha pogut obtenir la clau per l'alias: " + alias);
     }
 
+
     public static void main(String[] args) {
         boolean rep = true;
         do {
@@ -184,6 +182,7 @@ public class Main {
             System.out.println("7. A5 -> ex1.2.2");
             System.out.println("8. A5 -> ex1.3");
             System.out.println("9. A5 -> ex1.4");
+            System.out.println("10. A5 -> ex1.5 i 1.6");
             System.out.println("0. Exit");
             switch (Integer.parseInt(sc.nextLine())) {
                 case 1 -> xifratDesxifratKeyGen();
@@ -215,6 +214,13 @@ public class Main {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
+                case 10 -> {
+                    KeyPair keys = Xifrats.randomGenerate(1024);
+                    byte[] encrypted = Xifrats.signData("Texto Ejemplo".getBytes(), keys.getPrivate());
+                    System.out.println(new String(encrypted));
+                    System.out.println("Validació \"Ejemplo\":" +Xifrats.validateSignature("Ejemplo".getBytes(),encrypted,keys.getPublic()));
+                    System.out.println("Validació \"Texto Ejemplo\":" +Xifrats.validateSignature("Texto Ejemplo".getBytes(),encrypted,keys.getPublic()));
                 }
                 case 0 -> rep = false;
             }
