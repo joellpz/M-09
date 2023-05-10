@@ -129,7 +129,7 @@ public class Main {
     public static void saveRamdomKeyIntoKeystore(String keystorePath, String keystorePassword) {
         KeyStore keyStore = null;
         try {
-            keyStore = Xifrats.loadKeyStore(keystorePath,keystorePassword);
+            keyStore = Xifrats.loadKeyStore(keystorePath, keystorePassword);
             SecretKey secretKey = Xifrats.keygenKeyGeneration(128);
             KeyStore.SecretKeyEntry secretKeyEntry = new KeyStore.SecretKeyEntry(secretKey);
             KeyStore.ProtectionParameter entryPassword = new KeyStore.PasswordProtection(keystorePassword.toCharArray());
@@ -168,6 +168,20 @@ public class Main {
         throw new Exception("No s'ha pogut obtenir la clau per l'alias: " + alias);
     }
 
+    public static void xifrarDesxifrarClauEmbolcallada() {
+        KeyPair keys = Xifrats.randomGenerate(1024);
+        System.out.println("** Text to Encrypt ** ");
+        String toEnc = sc.nextLine();
+        System.out.println(" ** Encrypt Data ** ");
+        byte[][] encData = Xifrats.encryptWrappedData(toEnc.getBytes(), keys.getPublic());
+        System.out.println("Encrypted msg: "+ new String(encData[0],StandardCharsets.UTF_8));
+        System.out.println("Encrypted Key: "+ new String(encData[1],StandardCharsets.UTF_8));
+        System.out.println(" ** Decrypt Wrapped Data ** ");
+        byte[] decData = Xifrats.decryptWrappedData(encData[0],encData[1], keys.getPrivate());
+        System.out.println(" ** Decrypted Data: " + new String(decData,StandardCharsets.UTF_8));
+        System.out.println();
+    }
+
 
     public static void main(String[] args) {
         boolean rep = true;
@@ -183,6 +197,7 @@ public class Main {
             System.out.println("8. A5 -> ex1.3");
             System.out.println("9. A5 -> ex1.4");
             System.out.println("10. A5 -> ex1.5 i 1.6");
+            System.out.println("11. A5 -> ex2.2");
             System.out.println("0. Exit");
             switch (Integer.parseInt(sc.nextLine())) {
                 case 1 -> xifratDesxifratKeyGen();
@@ -219,9 +234,10 @@ public class Main {
                     KeyPair keys = Xifrats.randomGenerate(1024);
                     byte[] encrypted = Xifrats.signData("Texto Ejemplo".getBytes(), keys.getPrivate());
                     System.out.println(new String(encrypted));
-                    System.out.println("Validació \"Ejemplo\":" +Xifrats.validateSignature("Ejemplo".getBytes(),encrypted,keys.getPublic()));
-                    System.out.println("Validació \"Texto Ejemplo\":" +Xifrats.validateSignature("Texto Ejemplo".getBytes(),encrypted,keys.getPublic()));
+                    System.out.println("Validació \"Ejemplo\":" + Xifrats.validateSignature("Ejemplo".getBytes(), encrypted, keys.getPublic()));
+                    System.out.println("Validació \"Texto Ejemplo\":" + Xifrats.validateSignature("Texto Ejemplo".getBytes(), encrypted, keys.getPublic()));
                 }
+                case 11 -> { xifrarDesxifrarClauEmbolcallada();}
                 case 0 -> rep = false;
             }
         } while (rep);

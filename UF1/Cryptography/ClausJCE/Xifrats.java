@@ -73,11 +73,12 @@ public class Xifrats {
         }
         return decryptedData;
     }
+
     public static KeyStore loadKeyStore(String ksFile, String ksPwd) throws Exception {
         KeyStore ks = KeyStore.getInstance("PKCS12");
-        File f = new File (ksFile);
+        File f = new File(ksFile);
         if (f.isFile()) {
-            FileInputStream in = new FileInputStream (f);
+            FileInputStream in = new FileInputStream(f);
             ks.load(in, ksPwd.toCharArray());
         }
         return ks;
@@ -120,6 +121,54 @@ public class Xifrats {
             System.err.println("Error validant les dades: " + ex);
         }
         return isValid;
+    }
+
+    public static byte[][] encryptWrappedData(byte[] data, PublicKey pub) {
+        byte[][] encWrappedData = new byte[2][];
+        try {
+            //Generació de Clau
+            KeyGenerator kgen = KeyGenerator.getInstance("AES");
+            kgen.init(128);
+            //Clau simètrica
+            SecretKey sKey = kgen.generateKey();
+            //Algorisme de xifrat simètric.
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, sKey);
+            byte[] encMsg = cipher.doFinal(data);
+            //Algorisme de xifrat asimètric.
+            cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            cipher.init(Cipher.WRAP_MODE, pub);
+            byte[] encKey = cipher.wrap(sKey);
+            //Dades xifrades
+            encWrappedData[0] = encMsg;
+            //Clau Xifrada
+            encWrappedData[1] = encKey;
+        } catch (Exception ex) {
+            System.err.println("Ha succeït un error xifrant: " + ex);
+        }
+        return encWrappedData;
+    }
+
+    public static byte[]decryptWrappedData(byte[] encryptedData, byte[] encryptedKey, PrivateKey priv) {
+        byte[] decMsg = null;
+        try {
+            Cipher cipher;
+            cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            //Clau privada de B
+            cipher.init(Cipher.UNWRAP_MODE, priv);
+            //Algorisme de xifrat asimètric.
+            Key encKey = cipher.unwrap(encryptedKey,"AES",Cipher.SECRET_KEY);
+
+            //Algorisme de xifrat simetric
+            cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.DECRYPT_MODE, encKey);
+            //Algorisme de xifrat simètric.
+            decMsg = cipher.doFinal(encryptedData);
+
+        } catch (Exception ex) {
+            System.err.println("Ha succeït un error desxifrant: " + ex);
+        }
+        return decMsg;
     }
 
 }
